@@ -18,6 +18,6 @@ namespace QPGS.Models
         [ForeignKey("Admin")]
         public int AdminId { get; set; }
         
-        public AppUser Admin { get; set; } // Navigation property
+        public AppUser? Admin { get; set; } // Navigation property
     }
 }
