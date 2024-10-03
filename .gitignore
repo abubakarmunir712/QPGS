@@ -1,0 +1,46 @@
+# .NET generated files
+bin/
+obj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+project.lock.json
+project.fragment.lock.json
+.nuget/
+
+# VS Code settings
+.vscode/
+
+# Logs
+*.log
+
+# User-specific files
+*.rsuser
+*.csproj.user
+
+# ASP.NET Scaffolding
+.scaffolding
+
+# File system
+.DS_Store
+Thumbs.db
+
+# IDEs and editors
+.idea/
+*.swp
+
+# Build results
+out/
+artifacts/
+
+# Dependency directories
+node_modules/
+bower_components/
+
+# Publish output
+.publish/
+wwwroot/lib/
+
+# Entity Framework Core migrations
+migrations/
