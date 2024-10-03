@@ -1,0 +1,77 @@
+@{
+    ViewData["Title"] = "Register";
+}
+<link rel="stylesheet" href="~/css/auth.css">
+
+<div class="login-box">
+    <h2>SIGN UP</h2>
+    <form id="register-form">
+        <!-- Username Input -->
+        <div class="input-div">
+            <span class="input-icon">
+                <img src="~/Assets/user-regular.svg" alt="Username Icon">
+            </span>
+            <input type="text" placeholder="Username" class="input-with-icon" id="reg-username" required>
+        </div>
+
+        <!-- CNIC Input -->
+        <div class="input-div">
+            <span class="input-icon">
+                <img src="~/Assets/id-card-solid.svg" alt="CNIC Icon">
+            </span>
+            <input type="text" placeholder="CNIC_No (35201-1234567-1)" class="input-with-icon" id="reg-cnic" required>
+        </div>
+
+        <!-- Cell Phone Input -->
+        <div class="input-div">
+            <span class="input-icon">
+                <img src="~/Assets/phone-solid.svg" alt="Phone Icon">
+            </span>
+            <input type="tel" placeholder="Cell Phone" class="input-with-icon" id="cellphone" required>
+        </div>
+
+        <!-- Address Input -->
+        <div class="input-div">
+            <span class="input-icon">
+                <img src="~/Assets/house-solid.svg" alt="Address Icon">
+            </span>
+            <input type="text" placeholder="Address" class="input-with-icon" id="address" required>
+        </div>
+
+        <!-- Password Input -->
+        <div class="input-div">
+            <span class="input-icon">
+                <img src="~/Assets/lock-solid.svg" alt="Password Icon">
+            </span>
+            <input type="password" placeholder="Password" class="input-with-icon" id="reg-password" required>
+        </div>
+
+        <!-- Re-Type Password Input -->
+        <div class="input-div">
+            <span class="input-icon">
+                <img src="~/Assets/lock-solid.svg" alt="Re-Type Icon">
+            </span>
+            <input type="password" placeholder="Re-Type" class="input-with-icon" id="reg-conf-pass" required>
+        </div>
+
+        <!-- User Type Selection -->
+        <div class="user-type">
+            <span>User Type</span>
+            <label>
+                <input type="radio" name="user-type" value="admin" required> Admin
+            </label>
+            <label>
+                <input type="radio" name="user-type" value="user"> User
+            </label>
+        </div>
+        
+        <!-- Submit Button -->
+        <button type="submit">SIGN UP</button>
+
+        <!-- Alternative Action -->
+        <div class="alternative-action">
+            or start with <a href="/Home/Login">Login</a>
+        </div>
+    </form>
+</div>
+<script src="~/js/register.js"></script>

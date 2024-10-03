@@ -49,7 +49,7 @@ namespace QPGS.Controllers
             // Check if the user exists and verify the password
             if (user == null || _passwordHasher.VerifyHashedPassword(user, user.Password, loginModel.Password) != PasswordVerificationResult.Success)
             {
-                return Unauthorized(new { message = "Invalid credentials" });
+                return Unauthorized(new { error = "Invalid credentials" });
             }
 
             int hours = loginModel.Remember ? 48 : 1; // Set token expiry based on remember option

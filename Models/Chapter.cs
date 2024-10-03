@@ -15,6 +15,6 @@ namespace QPGS.Models
         [ForeignKey("Subject")]
         public int SubjectId { get; set; }
         
-        public Subject Subject { get; set; } // Navigation property
+        public Subject? Subject { get; set; } // Navigation property
     }
 }

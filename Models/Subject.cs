@@ -15,6 +15,6 @@ namespace QPGS.Models
         [ForeignKey("Class")]
         public int ClassId { get; set; }
         
-        public Class Class { get; set; } // Navigation property
+        public Class? Class { get; set; } // Navigation property
     }
 }

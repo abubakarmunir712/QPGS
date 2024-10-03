@@ -24,12 +24,36 @@ namespace QPGS.Controllers
                 return BadRequest(ModelState);
             }
 
-            // Add the class to the database
-            _context.Classes.Add(newClass);
-            await _context.SaveChangesAsync();
+            // Check if the teacher (admin) with the specified AdminId exists
+            var admin = await _context.AppUsers.FirstOrDefaultAsync(u => u.UserId == newClass.AdminId && u.Role == "teacher");
+            if (admin == null)
+            {
+                return BadRequest(new { error = "Teacher not found or invalid role" });
+            }
 
-            return Ok(new { message = "Class added successfully", classId = newClass.ClassId });
+            // Start a database transaction
+            using (var transaction = await _context.Database.BeginTransactionAsync())
+            {
+                try
+                {
+                    // Add the class to the database
+                    _context.Classes.Add(newClass);
+                    await _context.SaveChangesAsync();
+
+                    // Commit the transaction
+                    await transaction.CommitAsync();
+
+                    return Ok(new { message = "Class added successfully", classId = newClass.ClassId });
+                }
+                catch (Exception ex)
+                {
+                    // Rollback the transaction in case of any failure
+                    await transaction.RollbackAsync();
+                    return StatusCode(500, new { error = "An error occurred while adding the class", details = ex.Message });
+                }
+            }
         }
+
 
         // Delete a class
         [HttpDelete("delete/{id}")]
