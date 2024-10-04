@@ -1,5 +1,5 @@
 // Call the function on page load
-// document.addEventListener('DOMContentLoaded', checkUserRole(false));
+document.addEventListener('DOMContentLoaded', checkUserRole(false));
 
 document.getElementById("login-cnic").addEventListener("input", function () {
     let value = this.value.replace(/\D/g, ""); // Remove non-digit characters

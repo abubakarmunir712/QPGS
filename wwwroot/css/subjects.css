@@ -1,0 +1,65 @@
+/* General container settings */
+.container {
+    max-width: 1200px;
+    padding-left: 30px;
+    padding-right: 30px;
+    flex-grow: 1;
+}
+
+/* Left top corner positioning */
+.top-left-corner {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+
+.subjects-left-icon {
+    width: 50px;
+    height: auto;
+}
+
+/* Subject box styling */
+.subject-box {
+    background-color: #f4f4f4;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    flex-grow: 1;
+}
+
+.subject-box:hover {
+    transform: translateY(-10px);
+}
+
+.subject-icon {
+    width: 80px;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.subject-title {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.main-container {
+    align-items: flex-start !important;
+    gap: 20px;
+}
+
+/* Responsive layout adjustments */
+@media (max-width: 768px) {
+    .top-left-corner {
+        position: relative;
+        text-align: center;
+    }
+
+    .subject-box {
+        margin-bottom: 20px;
+    }
+
+    .subject-title {
+        font-size: 14px;
+    }
+}

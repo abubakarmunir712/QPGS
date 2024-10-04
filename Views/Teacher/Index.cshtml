@@ -1,0 +1,25 @@
+@{
+    ViewData["Title"] = "Teacher";
+}
+<link rel="stylesheet" href="~/css/teacher.css">
+<div class="inner-container">
+    <div id='class' class="box">
+        <img src="~/Assets/classes.png" alt="Classes" class="box-icon">
+        <div class="box-title">Classes</div>
+    </div>
+    <div id='subject' class="box">
+        <img src="~/Assets/subjects.png" alt="Subjects" class="box-icon">
+        <div class="box-title">Subjects</div>
+    </div>
+    <div id='generate-paper' class="box">
+        <img src="~/Assets/generate-paper.png" alt="Generate Paper" class="box-icon">
+        <div class="box-title">Generate Paper</div>
+    </div>
+</div>
+
+<script src="~/js/teacher.js" asp-append-version="true"></script>
+<script>
+    document.getElementById('class').addEventListener('click', function() {
+        window.location.href = '/Teacher/Classes'; // Replace with actual URL
+    });
+</script>

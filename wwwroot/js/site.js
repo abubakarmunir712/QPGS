@@ -25,9 +25,9 @@ function checkUserRole(isLogin) {
 
             // Redirect based on the role
             if (role === 'admin') {
-                window.location.href = '/home/admin';
+                window.location.href = '/admin';
             } else if (role === 'teacher') {
-                window.location.href = '/home/teacher';
+                window.location.href = '/teacher';
             } else {
                 // Handle unexpected roles or redirect to a default page
                 if (isLogin) {
@@ -75,7 +75,13 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!decodedToken || !decodedToken.exp) return true; // No valid token or expiration not present
         
         const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
-        return decodedToken.exp < currentTime; // Check if the token is expired
+        if(decodedToken.exp < currentTime){
+            localStorage.removeItem('token')
+            return true
+        }
+        else{
+            return false
+        }
     }
 
     // Reference to the navbar container
@@ -108,5 +114,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 <a class="nav-link text-dark" href="/Home/Register">Register</a>
             </li>
         `;
+    
     }
 });

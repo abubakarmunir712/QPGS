@@ -33,6 +33,9 @@ body {
   display: none;
 }
 
+.main-container main{
+  width: 90%;
+}
 @media (min-width: 302px) {
   .header-text {
     display: inline;

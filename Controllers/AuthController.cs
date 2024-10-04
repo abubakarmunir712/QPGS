@@ -62,7 +62,10 @@ namespace QPGS.Controllers
                 Subject = new ClaimsIdentity(new[]
                 {
                     new Claim(ClaimTypes.Name, user.Username),
-                    new Claim(ClaimTypes.Role, user.Role) // Assuming Role is a property of AppUser
+                    new Claim(ClaimTypes.Role, user.Role),
+                    new Claim("id", user.UserId.ToString())
+
+                     
                 }),
                 Expires = DateTime.UtcNow.AddHours(hours),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

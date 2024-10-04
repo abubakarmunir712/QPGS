@@ -108,6 +108,38 @@ namespace QPGS.Controllers
 
             return Ok(new { message = "Class details updated successfully" });
         }
+        [HttpGet("my-classes")]
+        public async Task<IActionResult> GetClassesForCurrentUser()
+        {
+            try
+            {
+                // Get the user ID from claims
+                var userIdClaim = User.FindFirst("id");
+                if (userIdClaim == null)
+                {
+                    return Unauthorized(new { error = "User ID not found in token" });
+                }
+
+                var userId = int.Parse(userIdClaim.Value);
+
+                // Query classes where AdminId matches the userId
+                var classes = await _context.Classes
+                    .Where(c => c.AdminId == userId)
+                    .ToListAsync();
+
+                if (classes == null || classes.Count == 0)
+                {
+                    return NotFound(new { message = "No classes found for the current user" });
+                }
+
+                return Ok(classes);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = "An error occurred while retrieving classes", details = ex.Message });
+            }
+        }
+
 
         // DTO for editing class details
         public class EditClassDto
