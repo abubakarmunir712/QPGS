@@ -1,9 +1,15 @@
+CheckLogin("teacher")
+
+
 document.addEventListener('DOMContentLoaded', () => {
     // Get the full URL of the current page
     const urlParams = new URLSearchParams(window.location.search);
 
     // Get the value of the 'class' parameter
     const classId = urlParams.get('class');
+    if (!classId){
+        return
+    }
 
     const token = localStorage.getItem('token'); // Retrieve the token from localStorage
     const apiUrl = `http://localhost:5195/api/subject/${classId}`;
@@ -23,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 window.location.href='/'
                 return;
             }
-            if (!response.ok && response.status !=404) {
+            else if (!response.ok && response.status !=404) {
                 Toastify({
                     text: "Something went wrong. Please try again!",
                     duration: 3000, // Duration in milliseconds
@@ -68,8 +74,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     let subjectsHTML = '<div class="row justify-content-start mt-4">';
 
                     subjects.forEach(subject => {
+                        console.log(subject)
                         subjectsHTML += `
-                            <div class="col-md-3 col-sm-6 mb-4">
+                            <div class="col-md-3 col-sm-6 mb-4" onclick=gotoSubject("${subject.subjectId}")>
                                 <div class="subject-box text-center">
                                     <img src="/Assets/subject-icon.png" alt="${subject.subjectName}" class="subject-icon">
                                     <div class="subject-title">${subject.subjectName}</div>
@@ -97,3 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error("Error fetching class data:", error);
         });
 });
+
+function gotoSubject(SubjectId){
+window.location.href=`/teacher/chapter?subject=${SubjectId}`
+}

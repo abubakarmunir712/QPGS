@@ -1,0 +1,60 @@
+/* General container for chapter items */
+.chap-container {
+    margin-top: 20px;
+}
+
+/* Styling for the chapter boxes */
+.chapter-box {
+    background-color: #f8f9fa; /* Light gray background */
+    border-radius: 8px; /* Rounded corners */
+    transition: transform 0.2s ease-in-out;
+}
+
+.chapter-box:hover {
+    transform: scale(1.05); /* Slight zoom effect on hover */
+}
+
+.chapter-icon {
+    font-size: 24px;
+    color: #007bff; /* Blue color for the icon */
+}
+
+.chapter-title {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* Styling for the rubrics box */
+.rubrics-box {
+    background-color: #ffffff; /* White background */
+    border: 1px solid #ddd; /* Light border */
+    border-radius: 8px;
+}
+
+.rubrics-box h5 {
+    font-weight: bold;
+}
+
+.list-group-item {
+    border: none;
+    padding: 10px 15px;
+    background-color: #e9ecef; /* Slightly darker background */
+    margin-bottom: 5px;
+    border-radius: 4px; /* Rounded corners for each item */
+}
+
+/* Media Queries for Responsive Design */
+@media (max-width: 992px) {
+    .rubrics-box {
+        margin-top: 20px; /* Move rubrics below chapters for medium to small screens */
+    }
+}
+.parent-div{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.classes-left-icon{
+    width: 60px;
+}

@@ -18,5 +18,8 @@ public class TeacherController : Controller
     public IActionResult Subjects(){
         return View();
     }
+    public IActionResult Chapter(){
+        return View();
+    }
 
 }

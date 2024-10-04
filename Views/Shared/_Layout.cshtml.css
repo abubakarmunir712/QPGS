@@ -54,3 +54,7 @@ button.accept-policy {
   justify-content: center;
   align-items: center;
 }
+
+.main-container{
+  align-items: flex-start;
+}
