@@ -9,11 +9,13 @@ using iText.Kernel.Colors;
 using iText.IO.Image; // For ImageDataFactory
 using System.Linq; // For LINQ queries
 using QPGS.Models; // Your model namespace
-using System.Collections.Generic; // Needed for List<T>
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization; // Needed for List<T>
 namespace QPGS.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class PdfController : ControllerBase
     {
         private readonly ApplicationDbContext _context;

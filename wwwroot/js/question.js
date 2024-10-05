@@ -1,5 +1,5 @@
 CheckLogin("teacher")
-
+const token = localStorage.getItem('token')
 document.addEventListener("DOMContentLoaded", function () {
     // Get the generate button
     const generateButton = document.querySelector(".btn-primary");
@@ -32,6 +32,7 @@ document.addEventListener("DOMContentLoaded", function () {
         fetch("/api/pdf/generate", {
             method: "POST",
             headers: {
+                "Authorization": `Bearer ${token}`,
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(requestData)

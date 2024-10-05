@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using QPGS.Models;
@@ -18,6 +19,7 @@ namespace QPGS.Controllers
 
         // POST: api/question/add
         [HttpPost("add")]
+        [Authorize]
         public async Task<IActionResult> AddQuestion([FromBody] Question question)
         {
             // Check if the chapter exists
