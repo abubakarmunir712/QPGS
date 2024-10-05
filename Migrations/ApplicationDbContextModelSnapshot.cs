@@ -54,7 +54,7 @@ namespace QPGS.Migrations
 
                     b.HasKey("UserId");
 
-                    b.ToTable("AppUsers");
+                    b.ToTable("AppUsers", (string)null);
                 });
 
             modelBuilder.Entity("QPGS.Models.Chapter", b =>
@@ -77,7 +77,7 @@ namespace QPGS.Migrations
 
                     b.HasIndex("SubjectId");
 
-                    b.ToTable("Chapters");
+                    b.ToTable("Chapters", (string)null);
                 });
 
             modelBuilder.Entity("QPGS.Models.Class", b =>
@@ -105,7 +105,7 @@ namespace QPGS.Migrations
 
                     b.HasIndex("AdminId");
 
-                    b.ToTable("Classes");
+                    b.ToTable("Classes", (string)null);
                 });
 
             modelBuilder.Entity("QPGS.Models.Question", b =>
@@ -131,7 +131,7 @@ namespace QPGS.Migrations
 
                     b.HasIndex("ChapterId");
 
-                    b.ToTable("Questions");
+                    b.ToTable("Questions", (string)null);
                 });
 
             modelBuilder.Entity("QPGS.Models.Subject", b =>
@@ -154,7 +154,7 @@ namespace QPGS.Migrations
 
                     b.HasIndex("ClassId");
 
-                    b.ToTable("Subjects");
+                    b.ToTable("Subjects", (string)null);
                 });
 
             modelBuilder.Entity("QPGS.Models.Chapter", b =>

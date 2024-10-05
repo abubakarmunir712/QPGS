@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 chapters.forEach((chapter, index) => {
                     const chapterHTML = `
                         <div class="col-md-6 col-lg-6 mb-3">
-                            <div class="chapter-box d-flex align-items-center p-3 shadow-sm" data-id="${chapter.chapterId}">
+                            <div class="chapter-box d-flex align-items-center p-3 shadow-sm" onclick=gotoChapter("${chapter.chapterId}")>
                                 <div class="chapter-icon me-2">
                                     <i class="fas fa-minus-circle"></i>
                                 </div>
@@ -78,3 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error("Error fetching chapter data:", error);
         });
 });
+
+function gotoChapter(ChapterId){
+    window.location.href=`/teacher/question?chapter=${ChapterId}`
+    }

@@ -21,5 +21,8 @@ public class TeacherController : Controller
     public IActionResult Chapter(){
         return View();
     }
+    public IActionResult Question(){
+        return View();
+    }
 
 }

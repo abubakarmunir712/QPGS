@@ -1,0 +1,76 @@
+/* Container for both sections */
+.question-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    margin-top: 50px;
+    flex-wrap:wrap ;
+    gap: 20px;
+}
+
+.question-container>div{
+    flex-grow: 1;
+    min-width: 250px;
+
+}
+
+/* Question Paper and Rubrics shared styles */
+.question-paper-container, .rubrics-container {
+    width: 300px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Updated shadow for stronger effect */
+    border: 1px solid #ddd;
+    background-color: #fff;
+    padding: 20px;
+}
+
+/* Last container on the right (Rubrics) - remove right margin */
+.rubrics-container {
+    margin-right: 0;
+}
+
+/* Headings */
+.question-paper-container h2, .rubrics-container h4 {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+/* Paragraph and labels */
+.question-paper-container p, .rubrics-container label, .form-check-label {
+    font-size: 16px;
+}
+
+/* Details section in Question Paper */
+.details p {
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+
+/* Button styles */
+.btn-primary {
+    background-color: #00A6B6;
+    border-color: #00A6B6;
+    font-weight: bold;
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+}
+
+.btn-primary:hover {
+    background-color: #008C9B;
+    border-color: #008C9B;
+}
+
+/* Adjust spacing between checkboxes */
+.form-check {
+    margin-bottom: 15px;
+}
+div.form-check {
+    background-color: #eeeded;
+    padding: 20px;
+    padding-left: 40px;
+    border-radius: 8px; /* Optional: to round the corners */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add shadow */
+    border: 1px solid #ddd; /* Optional: add a border if you want */
+}

@@ -52,7 +52,7 @@ namespace QPGS.Controllers
                 return Unauthorized(new { error = "Invalid credentials" });
             }
 
-            int hours = loginModel.Remember ? 48 : 1; // Set token expiry based on remember option
+            int hours = loginModel.Remember ? 48 : 4; // Set token expiry based on remember option
 
             // Generate JWT Token
             var tokenHandler = new JwtSecurityTokenHandler();

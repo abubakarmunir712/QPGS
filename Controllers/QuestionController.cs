@@ -16,27 +16,28 @@ namespace QPGS.Controllers
             _context = context;
         }
 
-        // POST: api/questions
+        // POST: api/question/add
         [HttpPost("add")]
-        public async Task<IActionResult> AddQuestion([FromBody] Question newQuestion)
+        public async Task<IActionResult> AddQuestion([FromBody] Question question)
         {
+            // Check if the chapter exists
+            var chapterEntity = await _context.Chapters.FirstOrDefaultAsync(c => c.ChapterId == question.ChapterId);
+            if (chapterEntity == null)
+            {
+                return NotFound(new { error = "Chapter not found" });
+            }
+
+            // Validate the model
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            // Check if the chapter exists
-            var chapterExists = await _context.Chapters.AnyAsync(c => c.ChapterId == newQuestion.ChapterId);
-            if (!chapterExists)
-            {
-                return BadRequest(new { error = "Chapter not found." });
-            }
-
             // Add the question to the database
-            _context.Questions.Add(newQuestion);
+            _context.Questions.Add(question);
             await _context.SaveChangesAsync();
 
-            return Ok(new { message = "Question added successfully", questionId = newQuestion.QuestionId });
+            return Ok(new { message = "Question added successfully", questionId = question.QuestionId });
         }
     }
 }

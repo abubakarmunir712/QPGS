@@ -1,0 +1,56 @@
+@{
+    ViewData["Title"] = "Question";
+}
+<link rel="stylesheet" href="~/css/question.css">
+<div class="container d-flex justify-content-center mt-5 question-container">
+    <!-- Question Paper Section -->
+    <div class="question-paper-container border shadow-sm p-4">
+        <h2 class="mb-4">Question Paper</h2>
+        <div class="question-types">
+            <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" id="match-pictures" checked>
+                <label class="form-check-label" for="match-pictures">
+                    Match the pictures with words correctly
+                </label>
+            </div>
+            <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" id="mark-answer">
+                <label class="form-check-label" for="mark-answer">
+                    Mark the correct Answer
+                </label>
+            </div>
+            <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" id="fill-blanks">
+                <label class="form-check-label" for="fill-blanks">
+                    Fill in the blanks
+                </label>
+            </div>
+        </div>
+        
+        <div class="details mt-4">
+            <p>Total Questions: <span>4</span></p>
+            <p>Total Marks: <span>4</span></p>
+            <p>Each Question Carry Marks: <span>1</span></p>
+        </div>
+        
+        <button class="btn btn-primary mt-4 w-100">Paper Generate</button>
+    </div>
+
+    <!-- Rubrics Section -->
+    <div class="rubrics-container border shadow-sm p-4">
+        <h4 class="mb-4">Rubrics</h4>
+        <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" id="rubric-1" checked>
+            <label class="form-check-label" for="rubric-1">R-1</label>
+        </div>
+        <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" id="rubric-2">
+            <label class="form-check-label" for="rubric-2">R-2</label>
+        </div>
+        <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" id="rubric-3">
+            <label class="form-check-label" for="rubric-3">R-3</label>
+        </div>
+    </div>
+</div>
+<script src="~/js/question.js"></script>

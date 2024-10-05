@@ -69,8 +69,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Redirect to the login page after 3 seconds
         setTimeout(() => {
-            window.location.href = "/"; // Adjust the path to your login page
-        }, 3000);
+            window.location.href = "/home/login"; 
+        }, 1000);
     }
 });
 
