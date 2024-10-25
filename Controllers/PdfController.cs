@@ -8,7 +8,7 @@ using iText.Layout.Properties;
 using iText.Kernel.Colors;
 using iText.IO.Image; // For ImageDataFactory
 using System.Linq; // For LINQ queries
-using QPGS.Models; // Your model namespace
+using QPGS.Models;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization; // Needed for List<T>
 namespace QPGS.Controllers
@@ -67,17 +67,17 @@ namespace QPGS.Controllers
                             // Conditional Rubric Sections
                             if (request.R1)
                             {
-                                AddRememberAndIdentificationSection(document, request.chapterId);
+                                AddRememberAndIdentificationSection(document, request.chapterId,request.number);
                             }
 
                             if (request.R2)
                             {
-                                AddUseOfItemsSection(document, request.chapterId);
+                                AddUseOfItemsSection(document, request.chapterId,request.number);
                             }
 
                             if (request.R3)
                             {
-                                AddUnderstandingSection(document, request.chapterId);
+                                AddUnderstandingSection(document, request.chapterId, request.number);
                             }
 
                             document.Close();
@@ -108,7 +108,7 @@ namespace QPGS.Controllers
             return paragraph;
         }
 
-        private void AddRememberAndIdentificationSection(Document document, int chapterId)
+        private void AddRememberAndIdentificationSection(Document document, int chapterId,int number)
         {
             document.Add(new Paragraph("Remember and Identification")
                 .SetFontSize(14)
@@ -118,6 +118,7 @@ namespace QPGS.Controllers
             // Fetch questions of type "match" for "Match the picture with the correct word"
             var matchQuestions = _context.Questions
                 .Where(q => q.ChapterId == chapterId && q.Type == "match")
+                .Take(number)
                 .ToList();
 
             // Prepare a list to store names and corresponding image links
@@ -183,6 +184,7 @@ namespace QPGS.Controllers
             // Fetch questions of type "identify"
             var identifyQuestions = _context.Questions
                 .Where(q => q.ChapterId == chapterId && q.Type == "identify")
+                .Take(number)
                 .ToList();
 
             foreach (var question in identifyQuestions)
@@ -205,7 +207,7 @@ namespace QPGS.Controllers
         }
 
 
-        private void AddUseOfItemsSection(Document document, int chapterId)
+        private void AddUseOfItemsSection(Document document, int chapterId, int number)
         {
             // Add section header
             document.Add(new Paragraph("Use of terms")
@@ -216,6 +218,7 @@ namespace QPGS.Controllers
             // Fetch questions of type "mark" for "Mark the correct answer"
             var markQuestions = _context.Questions
                 .Where(q => q.ChapterId == chapterId && q.Type == "mark")
+                .Take(number)
                 .ToList();
 
             // Add the "Mark the correct answer" section
@@ -230,6 +233,7 @@ namespace QPGS.Controllers
             // Fetch questions of type "choose" for "Choose the correct word"
             var chooseQuestions = _context.Questions
                 .Where(q => q.ChapterId == chapterId && q.Type == "choose")
+                .Take(number)
                 .ToList();
 
             // Add the "Choose the correct word" section
@@ -243,7 +247,7 @@ namespace QPGS.Controllers
         }
 
 
-        private void AddUnderstandingSection(Document document, int chapterId)
+        private void AddUnderstandingSection(Document document, int chapterId, int number)
         {
             document.Add(new Paragraph("Understanding")
                 .SetFontSize(14)
@@ -253,6 +257,7 @@ namespace QPGS.Controllers
             // Fetch questions of type "blanks" for "Fill in the blanks"
             var blankQuestions = _context.Questions
                 .Where(q => q.ChapterId == chapterId && q.Type == "blanks")
+                .Take(number)
                 .ToList();
 
             document.Add(CreateParagraph("5. Fill in the blanks:", 12));
@@ -266,6 +271,7 @@ namespace QPGS.Controllers
             // Fetch questions of type "complete" for "Complete the sentence"
             var completeQuestions = _context.Questions
                 .Where(q => q.ChapterId == chapterId && q.Type == "complete")
+                .Take(number)
                 .ToList();
 
             document.Add(CreateParagraph("\n6. Complete the sentence:", 12));
@@ -284,7 +290,7 @@ namespace QPGS.Controllers
         public bool R1 { get; set; }
         public bool R2 { get; set; }
         public bool R3 { get; set; }
-
+        public int number {get; set;}
         public int chapterId { get; set; }
     }
 }

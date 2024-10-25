@@ -1,0 +1,53 @@
+/* General styles for the inner container */
+.inner-container {
+    display: flex;
+    flex-wrap: wrap; /* Allows items to wrap to the next line */
+    justify-content: center; /* Center items horizontally */
+    margin: 0; /* Remove margin from the container */
+    padding: 10px; /* Optional padding around the container */
+}
+
+/* Styles for each box */
+.box {
+    background-color: #f9f9f9; /* Light background color for boxes */
+    border: 1px solid #ddd; /* Light border */
+    border-radius: 8px; /* Rounded corners */
+    flex: 1 1 250px; /* Allow the boxes to grow and shrink with a minimum width of 250px */
+    max-width: 300px; /* Optional maximum width for boxes */
+    margin: 10px; /* Space between boxes */
+    text-align: center; /* Center text inside the box */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+    transition: transform 0.2s; /* Animation for hover effect */
+    cursor: pointer; /* Change cursor to pointer */
+    padding: 20px;
+}
+
+/* Hover effect for boxes */
+.box:hover {
+    transform: scale(1.05); /* Slightly enlarge box on hover */
+}
+
+/* Styles for box icons */
+.box-icon {
+    width: 50px; /* Width of the icon */
+    height: auto; /* Keep aspect ratio of the icon */
+    margin: 20px 0; /* Margin for spacing above and below */
+}
+
+/* Styles for box titles */
+.box-title {
+    font-size: 16px; /* Font size for titles */
+    font-weight: bold; /* Bold titles */
+    color: #333; /* Dark color for titles */
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
+    .box {
+        flex: 1 1 100%; /* Full width on smaller screens */
+    }
+
+    .box-title {
+        font-size: 14px; /* Smaller font size for titles */
+    }
+}

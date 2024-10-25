@@ -85,7 +85,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Reference to the navbar container
-    const navbarContainer = document.querySelector(".navbar-nav.flex-grow-1");
+    const navbarContainer = document.querySelector("#login");
 
     // Clear existing items
     navbarContainer.innerHTML = "";

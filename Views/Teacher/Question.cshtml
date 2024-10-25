@@ -27,11 +27,15 @@
             </div>
         </div>
         
-        <div class="details mt-4">
-            <p>Total Questions: <span>4</span></p>
-            <p>Total Marks: <span>4</span></p>
-            <p>Each Question Carry Marks: <span>1</span></p>
-        </div>
+        
+
+    <div class="details mt-4">
+        <p class="questions">Total Questions: 
+                <input type="number" class="ml-4 form-control d-inline w-auto questionsNo" placeholder="No. of questions" min="0">
+        </p>
+        <p class="marks">Total Marks: <span>4</span></p>
+        <p>Each Question Carry Marks: <span>1</span></p>
+    </div>
         
         <button class="btn btn-primary mt-4 w-100">Paper Generate</button>
     </div>
@@ -54,3 +58,12 @@
     </div>
 </div>
 <script src="~/js/question.js"></script>
+<script>
+    const questionNo = document.querySelector('.questionsNo')
+    const questions = document.querySelector('.questions')
+    const marks = document.querySelector('.marks')
+    questionNo.addEventListener('input',(e)=>{
+        marks.textContent = `Total Marks: ${questionNo.value}`
+    })
+
+</script>

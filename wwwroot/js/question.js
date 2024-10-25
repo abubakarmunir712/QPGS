@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const rubric1 = document.getElementById("rubric-1").checked;
         const rubric2 = document.getElementById("rubric-2").checked;
         const rubric3 = document.getElementById("rubric-3").checked;
+        const questions = document.querySelector('.questionsNo').value;
 
         // Get the chapterId from the query parameter
         const urlParams = new URLSearchParams(window.location.search);
@@ -25,7 +26,8 @@ document.addEventListener("DOMContentLoaded", function () {
             R1: rubric1,
             R2: rubric2,
             R3: rubric3,
-            chapterId: parseInt(chapterId)
+            chapterId: parseInt(chapterId),
+            number:parseInt(questions)
         };
 
         // Make a POST request to /api/pdf/generate

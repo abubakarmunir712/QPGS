@@ -43,3 +43,20 @@ body {
     font-size: 19px;
   }
 }
+.text-left-adjust {
+  margin-left: -100px; /* Move the text 100px to the left */
+  /* padding-left: 100px; */
+}
+@media (max-width: 575px) {
+  .text-left-adjust{
+    margin-left: 0;
+    /* padding-left: 0; */
+  }
+}
+/* Hide the text-left-adjust element between 575px and 855px */
+@media (min-width: 575px) and (max-width: 855px) {
+  .text-left-adjust {
+      visibility: hidden; /* Hide the element */
+  }
+}
+

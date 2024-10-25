@@ -44,3 +44,4 @@ wwwroot/lib/
 
 # Entity Framework Core migrations
 migrations/
+*.sln
