@@ -1,0 +1,70 @@
+.manage-chapter-container {
+    margin: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.add-chapter-form {
+    margin-bottom: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.add-chapter-form h3 {
+    margin-bottom: 15px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.add-chapter-form button {
+    padding: 10px 15px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.add-chapter-form button:hover {
+    background-color: #218838;
+}
+
+.chapter-table {
+    margin-top: 20px;
+}
+
+.chapter-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.chapter-table th,
+.chapter-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.chapter-table th {
+    background-color: #f2f2f2;
+}
+
+.chapter-table tr:hover {
+    background-color: #f1f1f1;
+}

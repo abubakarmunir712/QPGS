@@ -41,5 +41,35 @@ namespace QPGS.Controllers
 
             return Ok(new { message = "Question added successfully", questionId = question.QuestionId });
         }
+
+        [HttpGet("all")]
+        [Authorize]
+        public async Task<IActionResult> GetAllQuestions()
+        {
+            var questions = await _context.Questions
+                .Include(q => q.Chapter) // Include Chapter if necessary
+                .ToListAsync();
+
+            return Ok(questions);
+        }
+
+        // DELETE: api/questions/delete/{id}
+        [HttpDelete("delete/{id}")]
+        [Authorize]
+        public async Task<IActionResult> DeleteQuestion(int id)
+        {
+            // Find the question by ID
+            var question = await _context.Questions.FindAsync(id);
+            if (question == null)
+            {
+                return NotFound(new { error = "Question not found" });
+            }
+
+            // Remove the question from the database
+            _context.Questions.Remove(question);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Question deleted successfully" });
+        }
     }
 }

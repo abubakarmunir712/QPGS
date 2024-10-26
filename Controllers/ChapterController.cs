@@ -66,5 +66,53 @@ namespace QPGS.Controllers
 
             return Ok(chapters);
         }
+        [Authorize]
+        [HttpDelete("delete/{chapterId}")]
+        // [Authorize(Roles = "admin")]
+        public async Task<IActionResult> DeleteChapter(int chapterId)
+        {
+            // Find the chapter by ID
+            var chapter = await _context.Chapters.FindAsync(chapterId);
+            if (chapter == null)
+            {
+                return NotFound(new { error = "Chapter not found." });
+            }
+
+            // Remove the chapter from the database
+            _context.Chapters.Remove(chapter);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Chapter deleted successfully." });
+        }
+        [Authorize]
+        [HttpGet("all-chapters")]
+        public async Task<IActionResult> GetAllChapters()
+        {
+            try
+            {
+                // Retrieve all chapters from the database
+                var chapters = await _context.Chapters
+                    .Select(c => new
+                    {
+                        c.ChapterId,
+                        c.ChapterName,
+                        c.SubjectId // Include the SubjectId; consider fetching the subject details if needed
+                    })
+                    .ToListAsync();
+
+                if (chapters == null || chapters.Count == 0)
+                {
+                    return NotFound(new { message = "No chapters found." });
+                }
+
+                return Ok(chapters);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = "An error occurred while retrieving chapters", details = ex.Message });
+            }
+        }
+
+
     }
 }

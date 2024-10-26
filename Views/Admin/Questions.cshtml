@@ -1,0 +1,55 @@
+<link rel="stylesheet" href="~/css/managequestions.css">
+<!-- Form to Add Question -->
+<div class="add-question-form">
+    <h3>Add New Question</h3>
+    <form id="questionForm">
+        <div class="form-group">
+            <label for="questionText">Question Text:</label>
+            <input type="text" id="questionText" name="questionText" required>
+        </div>
+        <div class="form-group">
+            <label for="chapterId">Chapter:</label>
+            <select id="chapterId" name="chapterId" required>
+                <option value="">Select Chapter</option>
+                <!-- Options will be populated here dynamically -->
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="questionType">Question Type:</label>
+            <select id="questionType" name="questionType" onchange="toggleImageInput()" required>
+                <option value="">Select Question Type</option>
+                <option value="match">Match</option>
+                <option value="identify">Identify</option>
+                <option value="mark">Mark</option>
+                <option value="choose">Choose</option>
+                <option value="blanks">Blanks</option>
+                <option value="complete">Complete</option>
+            </select>
+        </div>
+        <div class="form-group" id="imageInputContainer" style="display: none;">
+            <label for="imageUrl">Image URL:</label>
+            <input type="url" id="imageUrl" name="imageUrl">
+        </div>
+        <button type="button" onclick="addQuestion()">Add Question</button>
+    </form>
+</div>
+
+<!-- Table to Show Added Questions -->
+<div class="question-table">
+    <h3>Added Questions</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Question Text</th>
+                <th>Chapter ID</th>
+                <th>Type</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="questionTableBody">
+            <!-- Questions will be populated here dynamically -->
+        </tbody>
+    </table>
+</div>
+
+<script src="~/js/managequestions.js"></script>

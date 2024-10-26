@@ -1,0 +1,108 @@
+/* Style for the overall container */
+.add-question-form {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+/* Header styling */
+.add-question-form h3 {
+    margin-bottom: 20px;
+    font-size: 1.5em;
+    color: #333;
+}
+
+/* Style for each form group */
+.form-group {
+    margin-bottom: 15px;
+}
+
+/* Style for labels */
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+/* Style for text input and dropdowns */
+.form-group input[type="text"],
+.form-group input[type="url"],
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+/* Style for button */
+.add-question-form button {
+    background-color: #4CAF50; /* Green */
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+.add-question-form button:hover {
+    background-color: #45a049; /* Darker green on hover */
+}
+
+/* Style for the image input container */
+#imageInputContainer {
+    margin-top: 10px;
+}
+
+.question-table {
+    margin: 20px; /* Space above the table */
+    border: 1px solid #ccc; /* Border around the table section */
+    border-radius: 5px; /* Rounded corners */
+    overflow: hidden; /* Ensures rounded corners are visible */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow effect */
+}
+
+.question-table h3 {
+    background-color: #f7f7f7; /* Light background for the header */
+    padding: 10px; /* Padding inside the header */
+    margin: 0; /* Remove default margin */
+    border-bottom: 1px solid #ccc; /* Border under the header */
+}
+
+.question-table table {
+    width: 100%; /* Full width of the container */
+    border-collapse: collapse; /* Remove space between table cells */
+}
+
+.question-table th, 
+.question-table td {
+    padding: 12px; /* Padding for table cells */
+    text-align: left; /* Left-align text */
+    border-bottom: 1px solid #ddd; /* Border under table rows */
+}
+
+.question-table th {
+    background-color: #f2f2f2; /* Background color for headers */
+    color: #333; /* Text color for headers */
+}
+
+.question-table tr:hover {
+    background-color: #f1f1f1; /* Background color for row hover effect */
+}
+
+.question-table button {
+    background-color: #e74c3c; /* Red background for delete button */
+    color: white; /* White text color for button */
+    border: none; /* Remove border */
+    border-radius: 3px; /* Rounded corners for the button */
+    padding: 5px 10px; /* Padding for the button */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s; /* Smooth background color transition */
+}
+
+.question-table button:hover {
+    background-color: #c0392b; /* Darker red on hover */
+}

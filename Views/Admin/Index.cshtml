@@ -13,11 +13,11 @@
     </div>
     <div id='chapter' class="box">
         <img src="~/Assets/generate-paper.png" alt="Generate Paper" class="box-icon">
-        <div class="box-title">Manage Chapter</div>
+        <div class="box-title">Manage Chapters</div>
     </div>
     <div id='question' class="box">
         <img src="~/Assets/question.png" alt="Generate Paper" class="box-icon">
-        <div class="box-title">Manage Question</div>
+        <div class="box-title">Manage Questions</div>
     </div>
 </div>
 
@@ -30,6 +30,12 @@
         })
         document.querySelector('#subject').addEventListener('click', () => {
             window.location.href = 'admin/subjects'
+        })
+        document.querySelector('#chapter').addEventListener('click', () => {
+            window.location.href = 'admin/chapters'
+        })
+        document.querySelector('#question').addEventListener('click',()=>{
+            window.location.href = 'admin/questions'
         })
     })
 </script>

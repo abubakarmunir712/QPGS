@@ -8,7 +8,7 @@ document.getElementById('register-form').addEventListener('submit', async functi
     const password = document.getElementById('reg-password').value;
     const confirmPassword = document.getElementById('reg-conf-pass').value; // Get the confirm password value
     const userType = document.querySelector('input[name="user-type"]:checked'); // Get the selected user type
-    const role = userType ? userType.value : 'user'; // Default to 'user' if not selected
+    const role = userType ? userType.value : 'teacher'; // Default to 'user' if not selected
 
     // Check for empty fields
     if (!username || !cnic || !cellphone || !password || !confirmPassword || !userType) {

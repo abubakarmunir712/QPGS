@@ -17,5 +17,11 @@ public class AdminController : Controller
     public IActionResult Subjects(){
         return View();
     }
+    public IActionResult Chapters (){
+        return View();
+    }
+    public IActionResult Questions(){
+        return View();
+    }
 
 }

@@ -1,0 +1,42 @@
+@{
+    ViewData["Title"] = "Chapters";
+}
+<link rel="stylesheet" href="~/css/managechapters.css">
+<div class="manage-chapter-container">
+    <!-- Form to Add Chapter -->
+    <div class="add-chapter-form">
+        <h3>Add New Chapter</h3>
+        <form id="chapterForm">
+            <div class="form-group">
+                <label for="chapterName">Chapter Name:</label>
+                <input type="text" id="chapterName" name="chapterName" required>
+            </div>
+            <div class="form-group">
+                <label for="subjectId">Subject:</label>
+                <select id="subjectId" name="subjectId" required>
+                    <option value="">Select Subject</option>
+                    <!-- Options will be populated here dynamically -->
+                </select>
+            </div>
+            <button type="button" onclick="addChapter()">Add Chapter</button>
+        </form>
+    </div>
+
+    <!-- Table to Show Available Chapters -->
+    <div class="chapter-table">
+        <h3>Available Chapters</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Chapter Name</th>
+                    <th>Subject ID</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="chapterTableBody">
+                <!-- Chapters will be populated here dynamically -->
+            </tbody>
+        </table>
+    </div>
+</div>
+<script src="~/js/managechapters.js"></script>

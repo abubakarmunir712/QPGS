@@ -37,57 +37,41 @@ namespace QPGS.Controllers
                         {
                             var document = new Document(pdf);
 
-                            // Add the title
+                            // Add content to the document as needed
                             document.Add(CreateParagraph("Rubric-Based Question Paper", 20, TextAlignment.CENTER, true, 20));
-
-                            // Add Class and Subject
                             document.Add(CreateParagraph("Class: 1", 16, TextAlignment.LEFT, true));
                             document.Add(CreateParagraph("Subject: English", 16, TextAlignment.LEFT, true, 20));
 
-                            // Add Rubrics Section
+                            // Add rubrics based on request
                             document.Add(CreateParagraph("Rubrics:", 14, TextAlignment.LEFT, true, 10));
-                            if (request.R1)
-                            {
+                            if (request.R1) document.Add(new Paragraph("1. Remember and Identification").SetFontSize(12));
+                            if (request.R2) document.Add(new Paragraph("2. Use of items").SetFontSize(12));
+                            if (request.R3) document.Add(new Paragraph("3. Understanding").SetFontSize(12).SetMarginBottom(20));
 
-                                document.Add(new Paragraph("1. Remember and Identification")
-                                .SetFontSize(12));
-                            }
-                            if (request.R2)
-                            {
-
-                                document.Add(new Paragraph("2. Use of items")
-                                    .SetFontSize(12));
-                            }
-                            if (request.R3)
-                            {
-                                document.Add(new Paragraph("3. Understanding")
-                                    .SetFontSize(12)
-                                    .SetMarginBottom(20));
-                            }
-                            // Conditional Rubric Sections
-                            if (request.R1)
-                            {
-                                AddRememberAndIdentificationSection(document, request.chapterId,request.number);
-                            }
-
-                            if (request.R2)
-                            {
-                                AddUseOfItemsSection(document, request.chapterId,request.number);
-                            }
-
-                            if (request.R3)
-                            {
-                                AddUnderstandingSection(document, request.chapterId, request.number);
-                            }
+                            // Add rubric sections based on the request
+                            if (request.R1) AddRememberAndIdentificationSection(document, request.chapterId, request.number);
+                            if (request.R2) AddUseOfItemsSection(document, request.chapterId, request.number);
+                            if (request.R3) AddUnderstandingSection(document, request.chapterId, request.number);
 
                             document.Close();
                         }
                     }
 
-                    // Return the PDF as a file response
+                    // Convert stream to byte array for response
                     var pdfBytes = stream.ToArray();
-                    return File(pdfBytes, "application/pdf", "rubric_based_question_paper.pdf");
+
+                    // Set Content-Disposition header for inline display
+                    var result = new FileContentResult(pdfBytes, "application/pdf")
+                    {
+                        FileDownloadName = "rubric_based_question_paper.pdf"
+                    };
+                    Response.Headers["Content-Disposition"] = "inline; filename=rubric_based_question_paper.pdf";
+                    return result;
+
+
                 }
+
+
             }
             catch (Exception ex)
             {
@@ -108,7 +92,7 @@ namespace QPGS.Controllers
             return paragraph;
         }
 
-        private void AddRememberAndIdentificationSection(Document document, int chapterId,int number)
+        private void AddRememberAndIdentificationSection(Document document, int chapterId, int number)
         {
             document.Add(new Paragraph("Remember and Identification")
                 .SetFontSize(14)
@@ -132,12 +116,15 @@ namespace QPGS.Controllers
 
             // Shuffle the names and ensure the shuffled list doesn't match the original pairing
             var random = new Random();
-            List<string> shuffledNames;
+            List<string> shuffledNames = new List<string>(); ;
+            int maxAttempts = 5;
 
-            do
+            for (int attempt = 0; attempt < maxAttempts; attempt++)
             {
                 shuffledNames = names.OrderBy(x => random.Next()).ToList();
-            } while (shuffledNames.Where((name, index) => names[index] == name).Any());
+                if (!shuffledNames.Where((name, index) => names[index] == name).Any())
+                    break;
+            }
 
             // Add the "Match the picture with the correct word" section
             document.Add(CreateParagraph("1. Match the picture with the correct word:", 12));
@@ -290,7 +277,7 @@ namespace QPGS.Controllers
         public bool R1 { get; set; }
         public bool R2 { get; set; }
         public bool R3 { get; set; }
-        public int number {get; set;}
+        public int number { get; set; }
         public int chapterId { get; set; }
     }
 }
