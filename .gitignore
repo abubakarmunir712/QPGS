@@ -40,7 +40,6 @@ bower_components/
 
 # Publish output
 .publish/
-wwwroot/lib/
 
 # Entity Framework Core migrations
 migrations/
