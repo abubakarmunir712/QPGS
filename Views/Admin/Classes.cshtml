@@ -1,0 +1,46 @@
+@{
+    ViewData["Title"] = "Classes";
+}
+<link rel="stylesheet" href="~/css/manageclasses.css">
+<div class="manage-class-container">
+    <!-- Form to Add Class -->
+    <div class="add-class-form">
+        <h3>Add New Class</h3>
+        <form id="classForm">
+            <div class="form-group">
+                <label for="className">Class Name:</label>
+                <input type="text" id="className" name="className" required>
+            </div>
+            <div class="form-group">
+                <label for="classDescription">Class Description:</label>
+                <textarea id="classDescription" name="classDescription" rows="3" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="adminId">Admin ID:</label>
+                <select id="adminId" name="adminId" required>
+                    <option value="">Select Admin</option>
+                </select>
+            </div>
+            <button type="button" onclick="addClass()">Add Class</button>
+        </form>
+    </div>
+
+    <!-- Table to Show Available Classes -->
+    <div class="class-table">
+        <h3>Available Classes</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Class Name</th>
+                    <th>Description</th>
+                    <th>Teacher ID</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="classTableBody">
+                <!-- Classes will be populated here dynamically -->
+            </tbody>
+        </table>
+    </div>
+</div>
+<script src="~/js/manageclasses.js"></script>

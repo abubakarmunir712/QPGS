@@ -65,7 +65,7 @@ namespace QPGS.Controllers
                     new Claim(ClaimTypes.Role, user.Role),
                     new Claim("id", user.UserId.ToString())
 
-                     
+
                 }),
                 Expires = DateTime.UtcNow.AddHours(hours),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
@@ -75,7 +75,34 @@ namespace QPGS.Controllers
 
             return Ok(new { Token = tokenString, role = user.Role });
         }
+
+        [HttpGet("teachers")]
+        public async Task<IActionResult> GetTeachers()
+        {
+            // Fetch users with the "Teacher" role from the database
+            var teachers = await _context.AppUsers
+                .Where(u => u.Role == "teacher")
+                .Select(u => new
+                {
+                    u.UserId,
+                    u.Username,
+                    u.CNIC,
+                    u.Role
+                })
+                .ToListAsync();
+
+            // Check if there are any teachers found
+            if (!teachers.Any())
+            {
+                return NotFound(new { message = "No teachers found." });
+            }
+
+            return Ok(teachers);
+        }
+
     }
+
+
 
     public class LoginModel
     {

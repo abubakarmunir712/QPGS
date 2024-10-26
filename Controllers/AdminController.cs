@@ -10,5 +10,9 @@ public class AdminController : Controller
     {
         return View();
     }
+    public IActionResult Classes()
+    {
+        return View();
+    }
 
 }

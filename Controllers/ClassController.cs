@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using QPGS.Models;
@@ -54,7 +55,7 @@ namespace QPGS.Controllers
             }
         }
 
-
+        [Authorize]
         // Delete a class
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> DeleteClass(int id)
@@ -140,6 +141,34 @@ namespace QPGS.Controllers
             }
         }
 
+        [HttpGet("all-classes")]
+        public async Task<IActionResult> GetAllClasses()
+        {
+            try
+            {
+                // Retrieve all classes from the database
+                var classes = await _context.Classes
+                    .Select(c => new
+                    {
+                        c.ClassId,
+                        c.ClassName,
+                        c.ClassDescription,
+                        c.AdminId
+                    })
+                    .ToListAsync();
+
+                if (classes == null || classes.Count == 0)
+                {
+                    return NotFound(new { message = "No classes found." });
+                }
+
+                return Ok(classes);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = "An error occurred while retrieving classes", details = ex.Message });
+            }
+        }
 
         // DTO for editing class details
         public class EditClassDto
