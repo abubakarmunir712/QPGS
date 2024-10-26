@@ -15,7 +15,7 @@ namespace QPGS.Controllers
         {
             _context = context;
         }
-
+        [Authorize]
         // Add a new class
         [HttpPost("add")]
         public async Task<IActionResult> AddClass([FromBody] Class newClass)
@@ -140,7 +140,7 @@ namespace QPGS.Controllers
                 return StatusCode(500, new { error = "An error occurred while retrieving classes", details = ex.Message });
             }
         }
-
+        [Authorize]
         [HttpGet("all-classes")]
         public async Task<IActionResult> GetAllClasses()
         {

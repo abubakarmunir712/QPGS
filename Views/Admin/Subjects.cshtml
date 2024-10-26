@@ -1,0 +1,43 @@
+@{
+    ViewData["Title"] = "Subjects";
+}
+<link rel="stylesheet" href="~/css/managesubjects.css">
+<div class="manage-subject-container">
+    <!-- Form to Add Subject -->
+    <div class="add-subject-form">
+        <h3>Add New Subject</h3>
+        <form id="subjectForm">
+            <div class="form-group">
+                <label for="subjectName">Subject Name:</label>
+                <input type="text" id="subjectName" name="subjectName" required>
+            </div>
+            <div class="form-group">
+                <label for="classId">Class ID:</label>
+                <select id="classId" name="classId" required>
+                    <option value="">Select Class</option>
+                    <!-- Class IDs will be dynamically populated here -->
+                </select>
+            </div>
+            <button type="button" onclick="addSubject()">Add Subject</button>
+        </form>
+    </div>
+
+    <!-- Table to Show Available Subjects -->
+    <div class="subject-table">
+        <h3>Available Subjects</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Subject ID</th>
+                    <th>Subject Name</th>
+                    <th>Class ID</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="subjectTableBody">
+                <!-- Subjects will be populated here dynamically -->
+            </tbody>
+        </table>
+    </div>
+</div>
+<script src="~/js/managesubjects.js"></script>

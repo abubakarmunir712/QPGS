@@ -1,8 +1,9 @@
+CheckLogin("admin")
 document.addEventListener("DOMContentLoaded", () => {
     // Add event listener to the form\
     fetchTeachers();
     fetchClasses();
-    document.getElementById("classForm").addEventListener("submit", function(event) {
+    document.getElementById("classForm").addEventListener("submit", function (event) {
         event.preventDefault();  // Prevent form submission to reload the page
         addClass();  // Call the addClass function
     });
@@ -20,44 +21,49 @@ function addClass() {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization':`Bearer ${localStorage.getItem('token')}`
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
         },
         body: JSON.stringify(classData)
     })
-    .then(response => {
-        if (!response.ok) {
+        .then(response => {
+            if (!response.ok) {
+                Toastify({
+                    text: "Something went wrong. Please try again!",
+                    duration: 3000,
+                    gravity: "top",
+                    position: 'center',
+                    backgroundColor: "red",
+                }).showToast();
+                return Promise.reject("Failed to add class");
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Show success message
             Toastify({
-                text: "Something went wrong. Please try again!",
+                text: "Class added successfully!",
                 duration: 3000,
                 gravity: "top",
                 position: 'center',
-                backgroundColor: "red",
+                backgroundColor: "green",
             }).showToast();
-            return Promise.reject("Failed to add class");
-        }
-        return response.json();
-    })
-    .then(data => {
-        // Show success message
-        Toastify({
-            text: "Class added successfully!",
-            duration: 3000,
-            gravity: "top",
-            position: 'center',
-            backgroundColor: "green",
-        }).showToast();
 
-        // Optionally, update UI or table with new data
-        fetchClasses();
-        document.getElementById("classForm").reset();
-    })
-    .catch(error => {
-        console.error("Error:", error);
-    });
+            // Optionally, update UI or table with new data
+            fetchClasses();
+            document.getElementById("classForm").reset();
+        })
+        .catch(error => {
+            console.error("Error:", error);
+        });
 }
 
 function fetchTeachers() {
-    fetch('/api/auth/teachers')
+    fetch('/api/auth/teachers', {
+        method: 'GET',
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+    })
         .then(response => {
             if (!response.ok) {
                 throw new Error("Failed to fetch teachers.");
@@ -79,8 +85,18 @@ function fetchTeachers() {
 }
 
 function fetchClasses() {
-    fetch('/api/class/all-classes')
+    fetch('/api/class/all-classes',
+        {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+        }
+    )
         .then(response => {
+            if (response.status == 404){
+                classTableBody.innerHTML = ""
+            }
             if (!response.ok) {
                 throw new Error("Failed to fetch classes.");
             }

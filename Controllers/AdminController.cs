@@ -14,5 +14,8 @@ public class AdminController : Controller
     {
         return View();
     }
+    public IActionResult Subjects(){
+        return View();
+    }
 
 }
