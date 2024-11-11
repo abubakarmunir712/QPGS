@@ -4,13 +4,17 @@ using iText.Kernel.Pdf;
 using iText.Layout.Borders;
 using iText.Layout;
 using iText.Layout.Element;
+using iText.Kernel.Font;
 using iText.Layout.Properties;
-using iText.Kernel.Colors;
+using iText.Kernel.Pdf.Canvas;
+using iText.Kernel.Pdf.Canvas.Draw;
 using iText.IO.Image; // For ImageDataFactory
 using System.Linq; // For LINQ queries
 using QPGS.Models;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Authorization; // Needed for List<T>
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Authorization;
+using iText.IO.Font.Constants; // Needed for List<T>
 namespace QPGS.Controllers
 {
     [ApiController]
@@ -19,13 +23,36 @@ namespace QPGS.Controllers
     public class PdfController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
-        public PdfController(ApplicationDbContext context)
+        private readonly IWebHostEnvironment _env;
+
+        public int questionNumber = 1;
+        public int totalMarks = 0;
+        public int numberOfQuestions = 0;
+        public int totalSections = 0;
+        public PdfController(ApplicationDbContext context, IWebHostEnvironment env)
         {
             _context = context;
+            _env = env;
         }
         [HttpPost("generate")]
         public IActionResult GeneratePdf([FromBody] PdfRequestModel request)
         {
+            if (request.R1)
+            {
+                totalMarks += 1 * request.number;
+                totalSections++;
+            }
+            if (request.R2)
+            {
+                totalMarks += 1 * request.number;
+                totalSections++;
+            }
+            if (request.R3)
+            {
+                totalMarks += 1 * request.number;
+                totalSections++;
+            }
+            numberOfQuestions = request.number;
             try
             {
                 // Create a PDF document in memory
@@ -37,16 +64,55 @@ namespace QPGS.Controllers
                         {
                             var document = new Document(pdf);
 
-                            // Add content to the document as needed
-                            document.Add(CreateParagraph("Rubric-Based Question Paper", 20, TextAlignment.CENTER, true, 20));
-                            document.Add(CreateParagraph("Class: 1", 16, TextAlignment.LEFT, true));
-                            document.Add(CreateParagraph("Subject: English", 16, TextAlignment.LEFT, true, 20));
+                            var font = PdfFontFactory.CreateFont(StandardFonts.HELVETICA_BOLD);
 
-                            // Add rubrics based on request
-                            document.Add(CreateParagraph("Rubrics:", 14, TextAlignment.LEFT, true, 10));
-                            if (request.R1) document.Add(new Paragraph("1. Remember and Identification").SetFontSize(12));
-                            if (request.R2) document.Add(new Paragraph("2. Use of items").SetFontSize(12));
-                            if (request.R3) document.Add(new Paragraph("3. Understanding").SetFontSize(12).SetMarginBottom(20));
+                            // Add content to the document (text)
+                            document.Add(CreateParagraph("SZABIST SCHOOL LARKANA", 20, TextAlignment.CENTER, true, 20));
+
+                            // Get current page and create a PdfCanvas instance
+                            var page = pdf.GetPage(1);
+                            var canvas = new PdfCanvas(page);
+
+                            // Get the page height for positioning the canvas correctly
+                            float pageHeight = page.GetPageSize().GetHeight();
+
+                            
+                            canvas.BeginText()
+                                  .SetFontAndSize(font, 12)
+                                  .MoveText(40, pageHeight - 120) 
+                                  .ShowText("Subject: English")
+                                  .MoveText(230, 0) // Move down for the next line
+                                  .ShowText("Class: 1")
+                                  .MoveText(220, 0)
+                                  .ShowText($"Marks: {totalMarks*2}");
+
+                            // End the text mode
+                            canvas.EndText();
+
+                            var imagePath = System.IO.Path.Combine(_env.WebRootPath, "Assets/szabist-logo.png"); // Adjust filename
+                            var imageData = ImageDataFactory.Create(imagePath);
+                            var image = new Image(imageData);
+
+
+                            image.ScaleToFit(80, 80);  // Sets image to fit within 200x200 box
+
+                            // Set the position on the page
+                            image.SetFixedPosition(44, pageHeight - 87);
+
+                            // Add the image to the document
+                            document.Add(image);
+
+                            // Draw a line (just as an example)
+                            var line = new LineSeparator(new SolidLine(1f));
+                            line.SetWidth(520f)
+                                .SetMarginTop(40f)
+                                .SetMarginBottom(20f);
+
+                            document.Add(line); // Add the line to the document
+
+
+                            document.Add(CreateParagraph($"Answer the following questions                                            {totalSections} * {numberOfQuestions*2} = {totalMarks*2}  ", 15, TextAlignment.LEFT, true, 10));
+
 
                             // Add rubric sections based on the request
                             if (request.R1) AddRememberAndIdentificationSection(document, request.chapterId, request.number);
@@ -94,10 +160,6 @@ namespace QPGS.Controllers
 
         private void AddRememberAndIdentificationSection(Document document, int chapterId, int number)
         {
-            document.Add(new Paragraph("Remember and Identification")
-                .SetFontSize(14)
-                .SetFontColor(new iText.Kernel.Colors.DeviceRgb(55, 96, 146))  // Set the color here
-                .SetMarginBottom(10));
 
             // Fetch questions of type "match" for "Match the picture with the correct word"
             var matchQuestions = _context.Questions
@@ -125,9 +187,8 @@ namespace QPGS.Controllers
                 if (!shuffledNames.Where((name, index) => names[index] == name).Any())
                     break;
             }
-
             // Add the "Match the picture with the correct word" section
-            document.Add(CreateParagraph("1. Match the picture with the correct word:", 12));
+            document.Add(CreateParagraph($"Q.No.{questionNumber} Match the picture with the correct word", 14, TextAlignment.LEFT, true, 0));
 
             // Create a table with 2 columns: one for images and one for names
             var table = new Table(2)
@@ -156,17 +217,9 @@ namespace QPGS.Controllers
 
             // Add the table to the document
             document.Add(table);
-
-
-
-
-
-
-
-
-
+            questionNumber++;
             // Add the "Identify the object and write its name" section
-            document.Add(CreateParagraph("\n2. Identify the object and write its name:", 12));
+            document.Add(CreateParagraph($"\nQ.No.{questionNumber} Identify the object and write its name", 14, TextAlignment.LEFT, true, 0));
 
             // Fetch questions of type "identify"
             var identifyQuestions = _context.Questions
@@ -196,25 +249,21 @@ namespace QPGS.Controllers
 
         private void AddUseOfItemsSection(Document document, int chapterId, int number)
         {
-            // Add section header
-            document.Add(new Paragraph("Use of terms")
-                .SetFontSize(14)
-                .SetFontColor(new iText.Kernel.Colors.DeviceRgb(55, 96, 146)) // Set the color here
-                .SetMarginBottom(10));
+
 
             // Fetch questions of type "mark" for "Mark the correct answer"
             var markQuestions = _context.Questions
                 .Where(q => q.ChapterId == chapterId && q.Type == "mark")
                 .Take(number)
                 .ToList();
-
+            questionNumber++;
             // Add the "Mark the correct answer" section
-            document.Add(CreateParagraph("3. Mark the correct answer:", 12));
+            document.Add(CreateParagraph($"Q.No.{questionNumber} Mark the correct answer", 14, TextAlignment.LEFT, true, 0));
             for (int i = 0; i < markQuestions.Count; i++)
             {
                 // Generate label (a, b, c, d, ...)
                 char label = (char)('a' + i);
-                document.Add(CreateParagraph($"{label}) {markQuestions[i].QuestionText}  \n [ ] True  \n [ ] False", 12));
+                document.Add(CreateParagraph($"{label}) {markQuestions[i].QuestionText}  \n     [ ] True  \n     [ ] False", 12,TextAlignment.LEFT,false,5));
             }
 
             // Fetch questions of type "choose" for "Choose the correct word"
@@ -223,23 +272,20 @@ namespace QPGS.Controllers
                 .Take(number)
                 .ToList();
 
+            questionNumber++;
             // Add the "Choose the correct word" section
-            document.Add(CreateParagraph("\n4. Choose the correct word:", 12));
+            document.Add(CreateParagraph($"\nQ.No.{questionNumber} Choose the correct word", 14, TextAlignment.LEFT, true, 0));
             for (int i = 0; i < chooseQuestions.Count; i++)
             {
                 // Generate label (a, b, c, d, ...)
                 char label = (char)('a' + i);
-                document.Add(CreateParagraph($"{label}) {chooseQuestions[i].QuestionText}", 12));
+                document.Add(CreateParagraph($"{label}) {chooseQuestions[i].QuestionText}", 12,marginBottom:10));
             }
         }
 
 
         private void AddUnderstandingSection(Document document, int chapterId, int number)
         {
-            document.Add(new Paragraph("Understanding")
-                .SetFontSize(14)
-                .SetFontColor(new iText.Kernel.Colors.DeviceRgb(55, 96, 146))  // Set the color here
-                .SetMarginBottom(10));
 
             // Fetch questions of type "blanks" for "Fill in the blanks"
             var blankQuestions = _context.Questions
@@ -247,7 +293,8 @@ namespace QPGS.Controllers
                 .Take(number)
                 .ToList();
 
-            document.Add(CreateParagraph("5. Fill in the blanks:", 12));
+            questionNumber++;
+            document.Add(CreateParagraph($"Q.No.{questionNumber} Fill in the blanks", 14, TextAlignment.LEFT, true, 0));
             for (int i = 0; i < blankQuestions.Count; i++)
             {
                 char label = (char)('a' + i); // Generate label (a, b, c, d, ...)
@@ -261,7 +308,8 @@ namespace QPGS.Controllers
                 .Take(number)
                 .ToList();
 
-            document.Add(CreateParagraph("\n6. Complete the sentence:", 12));
+            questionNumber++;
+            document.Add(CreateParagraph($"\nQ.No.{questionNumber} Complete the sentence", 14, TextAlignment.LEFT, true, 0));
             for (int i = 0; i < completeQuestions.Count; i++)
             {
                 char label = (char)('a' + i); // Generate label (a, b, c, d, ...)
