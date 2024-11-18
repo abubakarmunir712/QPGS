@@ -20,15 +20,26 @@
                 <img src="~/Assets/lock-solid.svg" alt="Password Icon">
             </span>
             <input type="password" placeholder="Password" class="input-with-icon" id="login-password">
+            <span class="show-icon" onclick="togglePassword()">
+                <img src="~/Assets/eye-regular.svg" alt="Password Icon" id="eye-btn">
+            </span>
         </div>
 
         <div class="remember-me">
-           <label for="remember">Remember Me</label>
+            <label for="remember">Remember Me</label>
             <input type="checkbox" name="remember" id="remember">
         </div>
         <!-- Submit Button -->
         <button type="submit" id="login-btn">LOGIN</button>
-        </form>
+    </form>
 </div>
 
 <script src="~/js/login.js"></script>
+<script>
+    const togglePassword = () => {
+        const input = document.getElementById('login-password');
+        const type = input.type === 'password' ? 'text' : 'password';
+        input.type = type;
+        document.querySelector('#eye-btn').src = type === 'password' ? '/Assets/eye-regular.svg' : '/Assets/eye-slash-solid.svg'
+    }
+</script>

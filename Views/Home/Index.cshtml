@@ -3,6 +3,22 @@
 }
 
 <div class="text-center">
-   Loading .....
+  <div class="d-flex flex-column align-items-center justify-content-center bg-light" style="height: 70vh;">
+  <h2 class="text-center text-primary mb-4">Welcome to Szabist QPGS</h2>
+  <div class="d-flex gap-3">
+    <!-- Sign in as User -->
+    <button class="btn btn-primary" onclick="redirect('teacher')">Sign in as User</button>
+    <!-- Sign in as Admin -->
+    <button class="btn btn-success" onclick="redirect('admin')">Sign in as Admin</button>
+  </div>
 </div>
+
+</div>
+
+</div>
+<script>
+    const redirect = (role)=>{
+        window.location.href = `/home/login?role=${role}`
+    }
+</script>
 <script src="~/js/index.js"></script>

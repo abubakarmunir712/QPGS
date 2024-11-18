@@ -9,10 +9,7 @@ using iText.Layout.Properties;
 using iText.Kernel.Pdf.Canvas;
 using iText.Kernel.Pdf.Canvas.Draw;
 using iText.IO.Image; // For ImageDataFactory
-using System.Linq; // For LINQ queries
 using QPGS.Models;
-using System.Collections.Generic;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Authorization;
 using iText.IO.Font.Constants; // Needed for List<T>
 namespace QPGS.Controllers
@@ -29,6 +26,14 @@ namespace QPGS.Controllers
         public int totalMarks = 0;
         public int numberOfQuestions = 0;
         public int totalSections = 0;
+
+        List<string> q1 = new List<string>();
+        List<string> q2 = new List<string>();
+        List<string> q3 = new List<string>();
+        List<string> q4 = new List<string>();
+        List<string> q5 = new List<string>();
+        List<string> q6 = new List<string>();
+
         public PdfController(ApplicationDbContext context, IWebHostEnvironment env)
         {
             _context = context;
@@ -76,20 +81,20 @@ namespace QPGS.Controllers
                             // Get the page height for positioning the canvas correctly
                             float pageHeight = page.GetPageSize().GetHeight();
 
-                            
+
                             canvas.BeginText()
                                   .SetFontAndSize(font, 12)
-                                  .MoveText(40, pageHeight - 120) 
+                                  .MoveText(40, pageHeight - 120)
                                   .ShowText("Subject: English")
                                   .MoveText(230, 0) // Move down for the next line
                                   .ShowText("Class: 1")
                                   .MoveText(220, 0)
-                                  .ShowText($"Marks: {totalMarks*2}");
+                                  .ShowText($"Marks: {totalMarks * 2}");
 
                             // End the text mode
                             canvas.EndText();
 
-                            var imagePath = System.IO.Path.Combine(_env.WebRootPath, "Assets/szabist-logo.png"); // Adjust filename
+                            var imagePath = System.IO.Path.Combine(_env.WebRootPath, "Assets/szabist-logo.png");
                             var imageData = ImageDataFactory.Create(imagePath);
                             var image = new Image(imageData);
 
@@ -111,15 +116,84 @@ namespace QPGS.Controllers
                             document.Add(line); // Add the line to the document
 
 
-                            document.Add(CreateParagraph($"Answer the following questions                                            {totalSections} * {numberOfQuestions*2} = {totalMarks*2}  ", 15, TextAlignment.LEFT, true, 10));
+                            document.Add(CreateParagraph($"Answer the following questions                                            {totalSections} * {numberOfQuestions * 2} = {totalMarks * 2}  ", 15, TextAlignment.LEFT, true, 10));
 
 
                             // Add rubric sections based on the request
+                            // Add sections based on the request
                             if (request.R1) AddRememberAndIdentificationSection(document, request.chapterId, request.number);
                             if (request.R2) AddUseOfItemsSection(document, request.chapterId, request.number);
                             if (request.R3) AddUnderstandingSection(document, request.chapterId, request.number);
 
+                            // Explicitly add a new page for the "Answers" section
+                            document.Add(new AreaBreak(AreaBreakType.NEXT_PAGE));
+
+                            // Add the "Answers" heading
+                            // Add the "Answers" heading with proper formatting
+                            document.Add(new Paragraph("Answers")
+                                .SetFontSize(16)
+                                .SetBold()
+                                .SetTextAlignment(TextAlignment.CENTER) // Center the title
+                                .SetMarginBottom(20) // Add space below the title
+                            );
+
+                            // Combine all question lists into an array
+                            List<string>[] questionLists = { q1, q2, q3, q4, q5, q6 };
+
+                            // Initialize question number for tracking
+                            int questionNumber = 1;
+
+                            // Iterate through the lists
+                            foreach (var questionList in questionLists)
+                            {
+                                if (questionList.Count > 0) // Check if the list is not empty
+                                {
+                                    // Add a question heading with spacing and style
+                                    document.Add(new Paragraph($"Question {questionNumber}")
+                                        .SetFontSize(14)
+                                        .SetBold()
+                                        .SetMarginBottom(10) // Space below the question heading
+                                        .SetMarginTop(20)    // Space above the question heading
+                                    );
+
+                                    // Create a table to align options (a, b, c, etc.) in a structured way
+                                    var table = new Table(2)
+                                        .SetWidth(UnitValue.CreatePercentValue(100)) // Full-width table
+                                        .SetMarginBottom(15); // Add space below the table
+
+                                    char option = 'a'; // Start with 'a'
+                                    foreach (var answer in questionList)
+                                    {
+                                        // Add the option (a, b, c) to the first column
+                                        table.AddCell(new Cell()
+                                            .Add(new Paragraph($"{option})")
+                                                .SetFontSize(12)
+                                                .SetBold())
+                                            .SetBorder(Border.NO_BORDER) // Remove cell border for cleaner look
+                                            .SetTextAlignment(TextAlignment.RIGHT) // Right-align the option
+                                        );
+
+                                        // Add the answer text to the second column
+                                        table.AddCell(new Cell()
+                                            .Add(new Paragraph(answer)
+                                                .SetFontSize(12))
+                                            .SetBorder(Border.NO_BORDER) // Remove cell border for cleaner look
+                                            .SetTextAlignment(TextAlignment.LEFT) // Left-align the answer
+                                        );
+
+                                        option++; // Increment to the next letter
+                                    }
+
+                                    // Add the table to the document
+                                    document.Add(table);
+
+                                    questionNumber++; // Increment question number for the next non-empty list
+                                }
+                            }
+
+                            // Close the document after adding all content
                             document.Close();
+
                         }
                     }
 
@@ -164,9 +238,14 @@ namespace QPGS.Controllers
             // Fetch questions of type "match" for "Match the picture with the correct word"
             var matchQuestions = _context.Questions
                 .Where(q => q.ChapterId == chapterId && q.Type == "match")
-                .Take(number)
                 .ToList();
 
+            ShuffleArray(matchQuestions);
+            matchQuestions = matchQuestions.GetRange(0, number);
+            for (int i = 0; i < matchQuestions.Count; i++)
+            {
+                q1.Add(matchQuestions[i].AnswerText);
+            }
             // Prepare a list to store names and corresponding image links
             var matchingPairs = matchQuestions.Select(q => q.QuestionText.Split(",,"))
                                               .Where(parts => parts.Length == 2)
@@ -198,9 +277,10 @@ namespace QPGS.Controllers
             for (int i = 0; i < images.Count; i++)
             {
                 // Create the image
-                var image = new Image(ImageDataFactory.Create(images[i])) // Create the image
+                var image = new Image(ImageDataFactory.Create(Path.Combine(_env.WebRootPath, $"Assets/{images[i]}"))) // Create the image
                     .SetWidth(100) // Set the desired width
-                    .SetHeight(100); // Set the desired height
+                    .SetHeight(100)
+                    .SetMarginTop(10); // Set the desired height
 
                 // Add the image to the first cell with no border
                 table.AddCell(new Cell().Add(image).SetBorder(Border.NO_BORDER));
@@ -224,20 +304,22 @@ namespace QPGS.Controllers
             // Fetch questions of type "identify"
             var identifyQuestions = _context.Questions
                 .Where(q => q.ChapterId == chapterId && q.Type == "identify")
-                .Take(number)
                 .ToList();
-
+            ShuffleArray(identifyQuestions);
+            identifyQuestions = identifyQuestions.GetRange(0, number);
             foreach (var question in identifyQuestions)
             {
+                q2.Add(question.AnswerText);
                 // Assuming the question text contains only the image link
                 var imageLink = question.QuestionText; // Get the image link
 
                 // Create a new paragraph
                 var paragraph = new Paragraph()
-                    .Add(new Image(ImageDataFactory.Create(imageLink)) // Add the image
+                    .Add(new Image(ImageDataFactory.Create(Path.Combine(_env.WebRootPath, $"Assets/{imageLink}"))) // Add the image
                         .SetWidth(100) // Set the desired width
-                        .SetHeight(100)) // Set the desired height
-                    .Add(" What is this? - __________"); // Add the prompt with a blank line
+                        .SetHeight(100))
+                        .SetMarginTop(10) // Set the desired height
+                    .Add("           What is this? - __________"); // Add the prompt with a blank line
 
                 // Add the paragraph to the document
                 document.Add(paragraph);
@@ -254,32 +336,37 @@ namespace QPGS.Controllers
             // Fetch questions of type "mark" for "Mark the correct answer"
             var markQuestions = _context.Questions
                 .Where(q => q.ChapterId == chapterId && q.Type == "mark")
-                .Take(number)
                 .ToList();
+            ShuffleArray(markQuestions);
             questionNumber++;
             // Add the "Mark the correct answer" section
             document.Add(CreateParagraph($"Q.No.{questionNumber} Mark the correct answer", 14, TextAlignment.LEFT, true, 0));
-            for (int i = 0; i < markQuestions.Count; i++)
+
+            for (int i = 0; i < number; i++)
             {
+                q3.Add(markQuestions[i].AnswerText);
+
                 // Generate label (a, b, c, d, ...)
                 char label = (char)('a' + i);
-                document.Add(CreateParagraph($"{label}) {markQuestions[i].QuestionText}  \n     [ ] True  \n     [ ] False", 12,TextAlignment.LEFT,false,5));
+                document.Add(CreateParagraph($"{label}) {markQuestions[i].QuestionText}  \n     [ ] True  \n     [ ] False", 12, TextAlignment.LEFT, false, 5));
             }
 
             // Fetch questions of type "choose" for "Choose the correct word"
             var chooseQuestions = _context.Questions
                 .Where(q => q.ChapterId == chapterId && q.Type == "choose")
-                .Take(number)
                 .ToList();
 
+            ShuffleArray(chooseQuestions);
             questionNumber++;
             // Add the "Choose the correct word" section
             document.Add(CreateParagraph($"\nQ.No.{questionNumber} Choose the correct word", 14, TextAlignment.LEFT, true, 0));
-            for (int i = 0; i < chooseQuestions.Count; i++)
+            for (int i = 0; i < number; i++)
             {
+                q4.Add(chooseQuestions[i].AnswerText);
+
                 // Generate label (a, b, c, d, ...)
                 char label = (char)('a' + i);
-                document.Add(CreateParagraph($"{label}) {chooseQuestions[i].QuestionText}", 12,marginBottom:10));
+                document.Add(CreateParagraph($"{label}) {chooseQuestions[i].QuestionText}", 12, marginBottom: 10));
             }
         }
 
@@ -290,13 +377,14 @@ namespace QPGS.Controllers
             // Fetch questions of type "blanks" for "Fill in the blanks"
             var blankQuestions = _context.Questions
                 .Where(q => q.ChapterId == chapterId && q.Type == "blanks")
-                .Take(number)
                 .ToList();
-
+            ShuffleArray(blankQuestions);
             questionNumber++;
             document.Add(CreateParagraph($"Q.No.{questionNumber} Fill in the blanks", 14, TextAlignment.LEFT, true, 0));
-            for (int i = 0; i < blankQuestions.Count; i++)
+            for (int i = 0; i < number; i++)
             {
+                q5.Add(blankQuestions[i].AnswerText);
+
                 char label = (char)('a' + i); // Generate label (a, b, c, d, ...)
                 document.Add(CreateParagraph($"{label}) {blankQuestions[i].QuestionText}", 12, marginBottom: 10)
                     .SetMultipliedLeading(1.5f));
@@ -305,19 +393,31 @@ namespace QPGS.Controllers
             // Fetch questions of type "complete" for "Complete the sentence"
             var completeQuestions = _context.Questions
                 .Where(q => q.ChapterId == chapterId && q.Type == "complete")
-                .Take(number)
                 .ToList();
-
+            ShuffleArray(completeQuestions);
             questionNumber++;
             document.Add(CreateParagraph($"\nQ.No.{questionNumber} Complete the sentence", 14, TextAlignment.LEFT, true, 0));
-            for (int i = 0; i < completeQuestions.Count; i++)
+            for (int i = 0; i < number; i++)
             {
+                q6.Add(completeQuestions[i].AnswerText);
                 char label = (char)('a' + i); // Generate label (a, b, c, d, ...)
                 document.Add(CreateParagraph($"{label}) {completeQuestions[i].QuestionText}", 12)
                     .SetMultipliedLeading(1.5f));
             }
         }
 
+        public void ShuffleArray<T>(List<T> list)
+        {
+            Random random = new Random();
+            for (int i = list.Count - 1; i > 0; i--)
+            {
+                int j = random.Next(i + 1);
+                // Swap list[i] and list[j]
+                T temp = list[i];
+                list[i] = list[j];
+                list[j] = temp;
+            }
+        }
     }
 
     public class PdfRequestModel

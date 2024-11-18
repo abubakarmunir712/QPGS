@@ -73,6 +73,7 @@ function addQuestion() {
     const questionText = document.getElementById("questionText").value;
     const chapterId = document.getElementById("chapterId").value;
     const questionType = document.getElementById("questionType").value;
+    const answerText = document.getElementById("answerText").value;
     let data;
 
     // Concatenate image URL and question text if type is 'identify'
@@ -81,13 +82,16 @@ function addQuestion() {
         data = {
             questionText: `${imageUrl},,${questionText}`,
             chapterId: parseInt(chapterId),
-            type: questionType // Change 'Type' to 'type'
+            type: questionType,
+            answerText:answerText
         };
     } else {
         data = {
             questionText: questionText,
             chapterId: parseInt(chapterId),
-            type: questionType // Change 'Type' to 'type'
+            type: questionType, // Change 'Type' to 'type'
+            answerText:answerText,
+
         };
     }
 
@@ -100,7 +104,7 @@ function addQuestion() {
         body: JSON.stringify(data)
     })
     .then(response => {
-        if (!response.ok) {
+        if (!response.status == 200) {
             throw new Error('Network response was not ok');
         }
         return response.json();
@@ -175,5 +179,9 @@ function toggleImageInput() {
     if (questionType === "identify"){
         const inputBox = document.querySelector('#questionText')
         inputBox.placeholder = "Enter image url"
+    }
+    else{
+        const inputBox = document.querySelector('#questionText')
+        inputBox.placeholder = "Enter question"
     }
 }

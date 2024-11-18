@@ -10,7 +10,6 @@ project.fragment.lock.json
 .nuget/
 
 # VS Code settings
-.vscode/
 
 # Logs
 *.log
@@ -44,3 +43,7 @@ bower_components/
 # Entity Framework Core migrations
 migrations/
 *.sln
+branch_structure.json
+temp_auto_push.bat
+temp_interactive_push.bat
+.gitignore

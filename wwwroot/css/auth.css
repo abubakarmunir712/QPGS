@@ -34,14 +34,25 @@
     width: 45px; /* Adjust as necessary */
     height: 45px; /* Adjust as necessary */
     background-color: #2D3B55; /* Input background color */
-    border-radius: 5px 0 0 5px; /* Rounded left corners */
+    border-radius: 5px 0 0 5px;
 }
 
-.input-icon img {
+.show-icon{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 45px; /* Adjust as necessary */
+    height: 45px; /* Adjust as necessary */
+    background-color: #2D3B55; /* Input background color */
+}
+.input-icon img,
+.show-icon img {
     width: 20px; /* Adjust the icon size */
     height: 20px; /* Adjust the icon size */
     filter: brightness(0) saturate(100%) invert(35%) sepia(94%) saturate(548%) hue-rotate(191deg) brightness(97%) contrast(93%);
 }
+
+
 
 /* Style for the form inputs */
 .login-box input[type="text"],
@@ -137,4 +148,7 @@ padding: 10px;
 .remember-me input{
     position: relative;
     top: 4px;
+}
+#login-password{
+    border-radius: 0;
 }

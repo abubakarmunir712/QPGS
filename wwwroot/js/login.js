@@ -1,5 +1,10 @@
 // Call the function on page load
 document.addEventListener('DOMContentLoaded', checkUserRole(false));
+const role = new URLSearchParams(window.location.search).get('role');
+
+if(!role){
+    window.location.href = "/"
+}
 
 document.getElementById("login-cnic").addEventListener("input", function () {
     let value = this.value.replace(/\D/g, ""); // Remove non-digit characters
@@ -27,6 +32,7 @@ document.getElementById('login-form').addEventListener('submit', async function 
         CNIC: cnic,
         Password: password,
         Remember: remember,
+        Role: role,
     };
 
     try {
@@ -45,7 +51,7 @@ document.getElementById('login-form').addEventListener('submit', async function 
             localStorage.setItem('token', data.token);
             // Show success toast
             Toastify({
-                text: data.message || "Login Successful!",
+                text: data.message || `Login Successful as ${role}!`,
                 duration: 3000,
                 close: true,
                 gravity: "top",

@@ -47,7 +47,7 @@ namespace QPGS.Controllers
             var user = await _context.AppUsers.SingleOrDefaultAsync(u => u.CNIC == loginModel.CNIC);
 
             // Check if the user exists and verify the password
-            if (user == null || _passwordHasher.VerifyHashedPassword(user, user.Password, loginModel.Password) != PasswordVerificationResult.Success)
+            if (user == null || _passwordHasher.VerifyHashedPassword(user, user.Password, loginModel.Password) != PasswordVerificationResult.Success || user.Role != loginModel.Role)
             {
                 return Unauthorized(new { error = "Invalid credentials" });
             }
@@ -108,6 +108,8 @@ namespace QPGS.Controllers
     {
         public string CNIC { get; set; }
         public string Password { get; set; }
+
+        public string Role {get; set; }
         public bool Remember { get; set; } // True if user wants to stay logged in
     }
 }
